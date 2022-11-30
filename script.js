@@ -196,7 +196,7 @@ const disableChangeTime = function () {
 restartgamehref.addEventListener("click",function(){
   
     finishGame();
-    gameTime = 30;
+    // gameTime = 30;
     gameSpeed = 1700;
     isPlaying = false;
     score = 0;
@@ -207,15 +207,6 @@ restartgamehref.addEventListener("click",function(){
       startgame();
     }, 1000);
     
-
-    
-    // console.log("hello");
-    
-  
- 
-  // restartgamehref.setAttribute("href", window.location.href);
-  // document.location.reload();
-  // finishGame();
  
   
 });
