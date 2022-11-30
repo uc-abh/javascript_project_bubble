@@ -1,12 +1,14 @@
 let timerIntervaleId;
 let randomUncheckRadioIntervalId;
 let unCheckTimeoutId;
-let gameTime = 30;
-let gameSpeed = 1700;
+var gameTime = 30;
+var gameSpeed = 1700;
 let currentRadioId;
-let score = 0;
+var score = 0;
 var isPlaying = false;
-const resetgamehref = document.getElementById("resetgamehref");
+const restartgamehref = document.getElementById("restartgamehref");
+const resetgamehref=document.getElementById("resetgamehref");
+
 
 
 // change game time login
@@ -20,17 +22,8 @@ changeGameTimeInput.addEventListener('keyup', function(event) {
   event.target.value = +(event.target.value);
 });
 
-
-
-
-
-
-
-
-
 saveGameTimeButton.addEventListener('click', function () {
-  
-  if (changeGameTimeInput.value > 0) {
+  if (changeGameTimeInput.value > 0 && changeGameTimeInput.value<=86400) {
     gameTime = changeGameTimeInput.value;
     timeText.textContent = gameTime;
     currentTime=gameTime;
@@ -38,14 +31,14 @@ saveGameTimeButton.addEventListener('click', function () {
     return;
   }
 });
-const timeText = document.getElementById('time');
-const scoreText = document.getElementById('score');
+var timeText = document.getElementById('time');
+var scoreText = document.getElementById('score');
 const startButton = document.getElementById('startBtn');
 const radiocontainer = document.getElementById('radiocontainer');
 
 timeText.textContent = gameTime;
 scoreText.textContent = score;
-let currentTime = gameTime;
+var currentTime = gameTime;
 
 
 const startTimer = function () {
@@ -107,6 +100,7 @@ generateRadioButtons(60);
 const radioButtonArrays = document.querySelectorAll('.radio-button');
 
 const randomUncheckRadio = function () {
+  console.log("YESSS");
   const randomValue = Math.floor(Math.random() * 60 + 1);
   const element = document.getElementById(`radio-${randomValue}`);
 
@@ -199,12 +193,33 @@ const disableChangeTime = function () {
 };
 
 
-resetgamehref.addEventListener("click",function(){
-  // resetgamehref.setAttribute("href", window.location.href);
-  document.location.reload();
-  // finishGame();
-  // startgame();
+restartgamehref.addEventListener("click",function(){
   
+    finishGame();
+    gameTime = 30;
+    gameSpeed = 1700;
+    isPlaying = false;
+    score = 0;
+    currentTime = gameTime;
+    scoreText.textContent=score;
+    timeText.textContent=currentTime;
+    setTimeout(() => {
+      startgame();
+    }, 1000);
+    
+
+    
+    // console.log("hello");
+    
+  
+ 
+  // restartgamehref.setAttribute("href", window.location.href);
+  // document.location.reload();
+  // finishGame();
+ 
   
 });
 
+resetgamehref.addEventListener("click", function(){
+  location.reload();
+});
