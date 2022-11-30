@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game</title>
+    <style>
+      * {
+        margin: 0x 0px;
+        padding: 0px 0px;
+      }
+
+      #radiocontainer {
+        display: grid;
+        grid-template-columns: repeat(10, auto);
+        column-gap: 2vw;
+        row-gap: 15px;
+       
+      }
+
+      #container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100vw;
+      }
+
+      #border {
+        width: 45vw;
+        height: 80vh;
+        border: 7px solid black;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+      }
+
+      h3 {
+        font-family: 'Bree Serif', serif;
+      }
+
+      .features {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 40vw;
+        margin: 5px;
+      }
+
+      /* #push {
+        border: 1px solid grey;
+        display: inline-block;
+        width: 148px;
+      } */
+
+      
+      
+
+      input[type='radio'] {
+        width: 100%;
+        height: 1.5em;
+      }
+
+      .output {
+        display: flex;
+      }
+
+      .input {
+        width: 70px;
+        height: 25px;
+        border: 1px solid grey;
+        margin-left: 10px;
+      }
+      #restart{
+          height:30px;
+          width:200px;
+      }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="container">
+      <div id="border">
+        <h3>Shot The Circle</h3>
+        <p>Test your skill. How many boxes can you check in 30 seconds?</p>
+        <div class="features">
+         
+          <button id="startBtn">Start Game | Stop Game</button>
+          <div class="output">
+            Time:
+            <div class="input" id="time"></div>
+          </div>
+        </div>
+        <div class="features">
+          <div id="push">
+            <input
+            type="number"
+            placeholder="Change game time (sec)"
+            id="changeGameTimeInput"
+          />
+          <button id="saveGameTimeButton" type="button">Save Time</button>
+          </div>
+          <div class="output">
+            Score:
+            <div class="input" id="score"></div>
+          </div>
+        </div>
+        <hr width="80%">
+        <div id="radiocontainer">
+        </div>
+        <hr width="80%">
+        
+        <a id ="resetgamehref"><button id="restart">Restart the game</button></a>
+        
+      </div>
+     
+    </div>
+    <script src="./script.js"></script>
+  </body>
+</html>
