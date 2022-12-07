@@ -1,216 +1,177 @@
-let timerIntervaleId;
-let randomUncheckRadioIntervalId;
-let unCheckTimeoutId;
-var gameTime = 30;
-var gameSpeed = 1700;
-let currentRadioId;
+let timer_intervalid;
+let randomuncheckradio_intervalid;
+let uncheck_timeout_id;
+var game_time = 30;
+var game_speed = 1700;
+let current_radioid;
 var score = 0;
-var isPlaying = false;
-const restartgamehref = document.getElementById("restartgamehref");
-const resetgamehref=document.getElementById("resetgamehref");
+var is_playing = false;
+const changetime_valuefinal = 86400;
+const changeTime_valueinitial = 0;
+const generate_numberofradiobuttons = 60;
 
+const restartgame_href = document.getElementById("restartgamehref");
+const resetgame_href = document.getElementById("resetgamehref");
+const savegametime_button = document.getElementById('saveGameTimeButton');
+const changegametime_input = document.getElementById('changeGameTimeInput');
+var time_text = document.getElementById('time');
+var score_text = document.getElementById('score');
+const start_button = document.getElementById('startBtn');
+const radiocontainer = document.getElementById('radiocontainer');
 
-
-// change game time login
-
-const saveGameTimeButton = document.getElementById('saveGameTimeButton');
-
-const changeGameTimeInput = document.getElementById('changeGameTimeInput');
-
-
-changeGameTimeInput.addEventListener('keyup', function(event) {
+changegametime_input.addEventListener('keyup', function (event) {
   event.target.value = +(event.target.value);
 });
-
-saveGameTimeButton.addEventListener('click', function () {
-  if (changeGameTimeInput.value > 0 && changeGameTimeInput.value<=86400) {
-    gameTime = changeGameTimeInput.value;
-    timeText.textContent = gameTime;
-    currentTime=gameTime;
+savegametime_button.addEventListener('click', function () {
+  if (changegametime_input.value > changeTime_valueinitial && changegametime_input.value <= changetime_valuefinal) {
+    game_time = changegametime_input.value;
+    time_text.textContent = game_time;
+    currentTime = game_time;
   } else {
     return;
   }
 });
-var timeText = document.getElementById('time');
-var scoreText = document.getElementById('score');
-const startButton = document.getElementById('startBtn');
-const radiocontainer = document.getElementById('radiocontainer');
 
-timeText.textContent = gameTime;
-scoreText.textContent = score;
-var currentTime = gameTime;
-
-
+time_text.textContent = game_time;
+score_text.textContent = score;
+var currentTime = game_time;
 const startTimer = function () {
-  timerIntervaleId = setInterval(function () {
+  timer_intervalid = setInterval(function () {
     currentTime--;
-    timeText.textContent = currentTime;
-    
+    time_text.textContent = currentTime;
     if (currentTime === 0) {
-      timeText.textContent = currentTime;
-      
+      time_text.textContent = currentTime;
       finishGame();
-      currentTime = gameTime;
-      score = 0;
-      isPlaying = false;
-      // scoreText.textContent = score;
+      currentTime = game_time;
+      setTimeout(() => {
+        score = 0;
+      }, 1000);
+      is_playing = false;
     }
   }, 1000);
 };
-function startgame(){
+function startgame() {
   disableChangeTime();
-
-  if (isPlaying === true) {
-    // console.log('if statment');
-    isPlaying = false;
-
-    clearInterval(timerIntervaleId);
-    clearInterval(randomUncheckRadioIntervalId);
+  if (is_playing === true) {
+    is_playing = false;
+    clearInterval(timer_intervalid);
+    clearInterval(randomuncheckradio_intervalid);
     changeRadioButtonDisability(true);
   } else {
-    // console.log('else statement');
-
-    isPlaying = true;
+    is_playing = true;
     startTimer();
-
     changeRadioButtonDisability(false);
-
-    scoreText.textContent = score;
-    randomUncheckRadioIntervalId = setInterval(() => {
+    score_text.textContent = score;
+    randomuncheckradio_intervalid = setInterval(() => {
       randomUncheckRadio();
-    }, gameSpeed);
+    }, game_speed);
   }
 }
-startButton.addEventListener('click', function () {
+start_button.addEventListener('click', function () {
   startgame();
 });
-
 const generateRadioButtons = function (totalRadioButtons) {
   for (let i = 0; i < totalRadioButtons; i++) {
     const radioMarkup = `
     <input type="radio"
     id="radio-${i + 1}" class="radio-button" />`;
-
     radiocontainer.insertAdjacentHTML('afterbegin', radioMarkup);
   }
 };
-
-generateRadioButtons(60);
-
+generateRadioButtons(generate_numberofradiobuttons);
 const radioButtonArrays = document.querySelectorAll('.radio-button');
-
 const randomUncheckRadio = function () {
-  console.log("YESSS");
-  const randomValue = Math.floor(Math.random() * 60 + 1);
+  const randomValue = Math.floor(Math.random() * generate_numberofradiobuttons + 1);
   const element = document.getElementById(`radio-${randomValue}`);
-
   element.checked = true;
-
-  currentRadioId = element.getAttribute('id');
-
-  unCheckTimeoutId = setTimeout(function () {
+  current_radioid = element.getAttribute('id');
+  uncheck_timeout_id = setTimeout(function () {
     score--;
     element.checked = false;
-    scoreText.textContent = score;
-  }, gameSpeed);
+    score_text.textContent = score;
+  }, game_speed);
 };
 
-radioButtonArrays.forEach(function (radioButton) {
-  radioButton.addEventListener('click', function () {
-    if (this.getAttribute('id') === currentRadioId) {
-      score++;
-      this.checked = false;
-
-      clearTimeout(unCheckTimeoutId);
-    } else {
-      uncheckRadio(this);
-    }
-
-    scoreText.textContent = score;
+window.addEventListener('DOMContentLoaded', function () {
+  radioButtonArrays.forEach(function (radioButton) {
+    radioButton.addEventListener('click', function () {
+      if (this.getAttribute('id') === current_radioid) {
+        score++;
+        this.checked = false;
+        clearTimeout(uncheck_timeout_id);
+      } else {
+        uncheckRadio(this);
+      }
+      score_text.textContent = score;
+    });
   });
-});
+})
 
 const uncheckRadio = function (radioButton) {
   setTimeout(function () {
     radioButton.checked = false;
   }, 100);
 };
-
 const finishGame = function () {
-  // console.log('Your score is : ' + score);
-  clearInterval(unCheckTimeoutId);
-  clearInterval(timerIntervaleId);
-  clearInterval(randomUncheckRadioIntervalId);
-
+  clearInterval(uncheck_timeout_id);
+  clearInterval(timer_intervalid);
+  clearInterval(randomuncheckradio_intervalid);
   uncheckEveryRadioButton();
   changeRadioButtonDisability(true);
- 
+  setTimeout(() => {
+    alerMsg();
+  }, 1000);
 
-  
- setTimeout(() => {
-  alerMsg();
- }, 1000);
-  // console.log(result);
 };
 
-const alerMsg =function(){
-  var result = (score*2)*100/10;
-  if(result<0){
-    result=0;
+const alerMsg = function () {
+  var result = (score * 2) * 100 / game_time;
+  if (result < 0) {
+    result = 0;
   }
-  if(result>=80){
-    alert(`🎉🎉 Congratulations 🎉🎉 You got ☺️ ${result}% ☺️ and Your score is ${score} `);
-
+  if (result >= 80) {
+    alert(`🎉🎉 Congratulations 🎉🎉 Your score is ${score} 🤗 `);
   }
-  else if(result< 80 && result >= 60 ){
-    alert(`🤗 Good job & try again to get more scores 🤗 you got ☺️ ${result}% ☺️ and your score is ${score} `);
-
+  else if (result < 80 && result >= 60) {
+    alert(`🤗 Good job & try again to get more scores 🤗 your score is ${score} `);
   }
   else {
     alert(`😓 Sorry, better luck next time 😓 Your score is ${score} `);
-
   }
-  
 }
-
 const changeRadioButtonDisability = function (value) {
   radioButtonArrays.forEach(button => {
     button.disabled = value;
   });
 };
-
 const uncheckEveryRadioButton = function () {
   radioButtonArrays.forEach(function (btn) {
     btn.checked = false;
   });
 };
-
 changeRadioButtonDisability(true);
-
 const disableChangeTime = function () {
-  changeGameTimeInput.disabled = true;
-  saveGameTimeButton.disabled = true;
+  changegametime_input.disabled = true;
+  savegametime_button.disabled = true;
 };
-
-
-restartgamehref.addEventListener("click",function(){
-  
-    finishGame();
-    // gameTime = 30;
-    gameSpeed = 1700;
-    isPlaying = false;
+restartgame_href.addEventListener("click", function () {
+  clearInterval(uncheck_timeout_id);
+  clearInterval(timer_intervalid);
+  clearInterval(randomuncheckradio_intervalid);
+  uncheckEveryRadioButton();
+  changeRadioButtonDisability(true);
+  score = 0;
+  game_speed = 1700;
+  is_playing = false;
+  currentTime = game_time;
+  score_text.textContent = score;
+  time_text.textContent = currentTime;
+  setTimeout(() => {
+    startgame();
     score = 0;
-    currentTime = gameTime;
-    scoreText.textContent=score;
-    timeText.textContent=currentTime;
-    setTimeout(() => {
-      startgame();
-    }, 1000);
-    
- 
-  
+  }, 1000);
 });
-
-resetgamehref.addEventListener("click", function(){
+resetgame_href.addEventListener("click", function () {
   location.reload();
 });
+
